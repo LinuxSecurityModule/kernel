@@ -6,9 +6,11 @@ The Linux Security Module (LSM) framework provides a mechanism for
 various security checks to be hooked by new kernel extensions. The name
 "module" is a bit of a misnomer since these extensions are not actually
 loadable kernel modules. Instead, they are selectable at build-time via
-CONFIG_DEFAULT_SECURITY and can be overridden at boot-time via the
-``"security=..."`` kernel command line argument, in the case where multiple
-LSMs were built into a given kernel.
+CONFIG_LSM, an ordered list of the LSMs to enable, and can be
+overridden at boot-time via the ``"lsm=..."`` kernel command line
+argument. The ``"security=..."`` kernel command line argument remains
+available to choose a legacy "major" security module, but has been
+deprecated by the ``"lsm=..."`` parameter.
 
 The primary users of the LSM interface are Mandatory Access Control
 (MAC) extensions which provide a comprehensive security policy. Examples
