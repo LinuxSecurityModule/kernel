@@ -406,24 +406,28 @@ int security_inode_init_security(struct inode *inode, struct inode *dir,
 int security_inode_init_security_anon(struct inode *inode,
 				      const struct qstr *name,
 				      const struct inode *context_inode);
-int security_inode_create(struct inode *dir, struct dentry *dentry, umode_t mode);
+int security_inode_create(struct mnt_idmap *idmap, struct inode *dir,
+			  struct dentry *dentry, umode_t mode);
 void security_inode_post_create_tmpfile(struct mnt_idmap *idmap,
 					struct inode *inode);
-int security_inode_link(struct dentry *old_dentry, struct inode *dir,
-			 struct dentry *new_dentry);
+int security_inode_link(struct mnt_idmap *idmap, struct dentry *old_dentry,
+			struct inode *dir, struct dentry *new_dentry);
 int security_inode_unlink(struct inode *dir, struct dentry *dentry);
-int security_inode_symlink(struct inode *dir, struct dentry *dentry,
-			   const char *old_name);
-int security_inode_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode);
+int security_inode_symlink(struct mnt_idmap *idmap, struct inode *dir,
+			   struct dentry *dentry, const char *old_name);
+int security_inode_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+			 struct dentry *dentry, umode_t mode);
 int security_inode_rmdir(struct inode *dir, struct dentry *dentry);
-int security_inode_mknod(struct inode *dir, struct dentry *dentry, umode_t mode, dev_t dev);
+int security_inode_mknod(struct mnt_idmap *idmap, struct inode *dir,
+			 struct dentry *dentry, umode_t mode, dev_t dev);
 int security_inode_rename(struct inode *old_dir, struct dentry *old_dentry,
 			  struct inode *new_dir, struct dentry *new_dentry,
 			  unsigned int flags);
 int security_inode_readlink(struct dentry *dentry);
 int security_inode_follow_link(struct dentry *dentry, struct inode *inode,
 			       bool rcu);
-int security_inode_permission(struct inode *inode, int mask);
+int security_inode_permission(struct mnt_idmap *idmap, struct inode *inode,
+			      int mask);
 int security_inode_setattr(struct mnt_idmap *idmap,
 			   struct dentry *dentry, struct iattr *attr);
 void security_inode_post_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
@@ -907,9 +911,10 @@ static inline int security_inode_init_security_anon(struct inode *inode,
 	return 0;
 }
 
-static inline int security_inode_create(struct inode *dir,
-					 struct dentry *dentry,
-					 umode_t mode)
+static inline int security_inode_create(struct mnt_idmap *idmap,
+					struct inode *dir,
+					struct dentry *dentry,
+					umode_t mode)
 {
 	return 0;
 }
@@ -918,9 +923,10 @@ static inline void
 security_inode_post_create_tmpfile(struct mnt_idmap *idmap, struct inode *inode)
 { }
 
-static inline int security_inode_link(struct dentry *old_dentry,
-				       struct inode *dir,
-				       struct dentry *new_dentry)
+static inline int security_inode_link(struct mnt_idmap *idmap,
+				      struct dentry *old_dentry,
+				      struct inode *dir,
+				      struct dentry *new_dentry)
 {
 	return 0;
 }
@@ -931,16 +937,18 @@ static inline int security_inode_unlink(struct inode *dir,
 	return 0;
 }
 
-static inline int security_inode_symlink(struct inode *dir,
-					  struct dentry *dentry,
-					  const char *old_name)
+static inline int security_inode_symlink(struct mnt_idmap *idmap,
+					 struct inode *dir,
+					 struct dentry *dentry,
+					 const char *old_name)
 {
 	return 0;
 }
 
-static inline int security_inode_mkdir(struct inode *dir,
-					struct dentry *dentry,
-					int mode)
+static inline int security_inode_mkdir(struct mnt_idmap *idmap,
+				       struct inode *dir,
+				       struct dentry *dentry,
+				       int mode)
 {
 	return 0;
 }
@@ -951,9 +959,10 @@ static inline int security_inode_rmdir(struct inode *dir,
 	return 0;
 }
 
-static inline int security_inode_mknod(struct inode *dir,
-					struct dentry *dentry,
-					int mode, dev_t dev)
+static inline int security_inode_mknod(struct mnt_idmap *idmap,
+				       struct inode *dir,
+				       struct dentry *dentry,
+				       int mode, dev_t dev)
 {
 	return 0;
 }
@@ -979,7 +988,8 @@ static inline int security_inode_follow_link(struct dentry *dentry,
 	return 0;
 }
 
-static inline int security_inode_permission(struct inode *inode, int mask)
+static inline int security_inode_permission(struct mnt_idmap *idmap,
+					    struct inode *inode, int mask)
 {
 	return 0;
 }
